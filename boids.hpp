@@ -25,12 +25,12 @@ Bvec null{0., 0., 0.};
 std::vector<Boid> sep(std::vector<Boid>& Boids) {
   double s;
   std::vector<Boid> copy = Boids;
-  for (int i; i < Boids.size(); i++) {
+  for (size_t i; i < Boids.size(); i++) {
     copy[i].vel() = null;
-    for (int j; j < Boids.size(); j++) {
+    for (size_t j; j < Boids.size(); j++) {
       float ds = magn(Boids[i].pos() - Boids[j].pos());
       if ((ds > 0) && (ds < d)) {
-        copy[i].vel() += (-((Boids[i].pos() - Boids[j].pos()) * s));
+        copy[i].vel() += (-((copy[i].pos() - copy[j].pos()) * s));
       }
     }
   }

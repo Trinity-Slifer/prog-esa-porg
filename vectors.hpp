@@ -50,7 +50,7 @@ bool operator==(Bvec const& v1, Bvec const& v2) {
   return (v1.x() == v2.x()) && (v1.y() == v2.y()) && (v1.z() == v2.z());
 }
 
-Bvec operator+=(Bvec& v1, Bvec& v2) {
+Bvec operator+=(Bvec v1, Bvec v2) {
   v1 = {v1.x() + v2.x(), v1.y() + v2.y(), v1.z() + v2.z()};
   return v1;
 }
