@@ -55,12 +55,23 @@ TEST_CASE("TESTING VECTORS") {
     CHECK(v2 / 2. == res1);
     CHECK(v3 / -1. == res2);
   }
-  SUBCASE("testing norm") {
+  SUBCASE("testing magn") {
     Bvec v1{1., 2., 1.};
     Bvec v2{2., 3., 1.};
     Bvec v3{4., 0., 0.};
-    CHECK(norm(v2) == sqrt(14.));
-    CHECK(norm(v3) == 4.);
-    CHECK(norm(v1) == sqrt(6.));
+    CHECK(magn(v2) == sqrt(14.));
+    CHECK(magn(v3) == 4.);
+    CHECK(magn(v1) == sqrt(6.));
+  }
+  SUBCASE("testing +=") {
+    Bvec v1{1., 2., 1.};
+    Bvec v2{2., 3., 1.};
+    Bvec v3{4., 3., 2.};
+    Bvec res1{3., 5., 2.};
+    Bvec res2{6., 6., 3.};
+    Bvec res3{5., 5., 3.};
+    CHECK(v1 += v2 == res1);
+    CHECK(v2 += v3 == res2);
+    CHECK(v1 += v3 == res3);
   }
 }

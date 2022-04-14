@@ -26,6 +26,11 @@ Bvec operator-(Bvec const& v1, Bvec const& v2) {
   return res;
 }
 
+Bvec operator-(Bvec const& v2) {
+  Bvec res = {-v2.x(), -v2.y(), -v2.z()};
+  return res;
+}
+
 double operator*(Bvec const& v1, Bvec const& v2) {
   double res = v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z();
   return res;
@@ -44,5 +49,11 @@ Bvec operator/(Bvec const& v1, double const& s) {
 bool operator==(Bvec const& v1, Bvec const& v2) {
   return (v1.x() == v2.x()) && (v1.y() == v2.y()) && (v1.z() == v2.z());
 }
-double norm(Bvec const& v1) { return sqrt(v1 * v1); }
+
+Bvec operator+=(Bvec& v1, Bvec& v2) {
+  v1 = {v1.x() + v2.x(), v1.y() + v2.y(), v1.z() + v2.z()};
+  return v1;
+}
+
+double magn(Bvec const& v1) { return sqrt(v1 * v1); }
 #endif
