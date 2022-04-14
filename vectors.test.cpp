@@ -55,4 +55,12 @@ TEST_CASE("TESTING VECTORS") {
     CHECK(v2 / 2. == res1);
     CHECK(v3 / -1. == res2);
   }
+  SUBCASE("testing norm") {
+    Bvec v1{1., 2., 1.};
+    Bvec v2{2., 3., 1.};
+    Bvec v3{4., 0., 0.};
+    CHECK(norm(v2) == sqrt(14.));
+    CHECK(norm(v3) == 4.);
+    CHECK(norm(v1) == sqrt(6.));
+  }
 }

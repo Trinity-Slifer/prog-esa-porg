@@ -44,5 +44,5 @@ Bvec operator/(Bvec const& v1, double const& s) {
 bool operator==(Bvec const& v1, Bvec const& v2) {
   return (v1.x() == v2.x()) && (v1.y() == v2.y()) && (v1.z() == v2.z());
 }
-
+double norm(Bvec const& v1) { return sqrt(v1 * v1); }
 #endif
