@@ -16,25 +16,63 @@ class Boid {
   Boid(Bvec pos, Bvec vel) : b_pos{pos}, b_vel{vel} {}
   Bvec pos() const { return b_pos; };
   Bvec vel() const { return b_vel; };
-  Bvec locate = pos();
   // nt size() const { return }
 };
 
 float d{};
+float ds_;
+double s;
 Bvec null{0., 0., 0.};
 std::vector<Boid> sep(std::vector<Boid>& Boids) {
-  double s;
-  std::vector<Boid> copy = Boids;
+  std::vector<Boid> copysep = Boids;
   for (size_t i; i < Boids.size(); i++) {
-    copy[i].vel() = null;
+    copysep[i].vel() = null;
     for (size_t j; j < Boids.size(); j++) {
-      float ds = magn(Boids[i].pos() - Boids[j].pos());
+      double ds = magn(Boids[i].pos() - Boids[j].pos());
       if ((ds > 0) && (ds < d)) {
-        copy[i].vel() += (-((copy[i].pos() - copy[j].pos()) * s));
+        if (ds < ds_) {
+          copysep[i].vel() += (-((Boids[i].pos() - Boids[j].pos()) * s));
+        }
       }
     }
   }
-  return copy;
+  return copysep;
+}
+double a;
+std::vector<Boid> ali(std::vector<Boid>& Boids) {
+  std::vector<Boid> copyali = Boids;
+  for (size_t i; i < Boids.size(); i++) {
+    Bvec velali = null;
+    int count;
+    for (size_t j; j < Boids.size(); j++) {
+      double ds = magn(Boids[i].pos() - Boids[j].pos());
+      if ((ds < d) && (ds > 0)) {
+        velali += (Boids[j].vel() - Boids[i].vel());
+        count++;
+      }
+    }
+    copyali[i].vel() = (velali / count) * a;
+  }
+  return copyali;
 }
 
+double c;
+std::vector<Boid> coh(std::vector<Boid>& Boids) {
+  std::vector<Boid> copycoh = Boids;
+  for (size_t i; i < Boids.size(); i++) {
+    Bvec com = null;
+    copycoh[i].vel() = null;
+    int count;
+    for (size_t j; j < Boids.size(); j++) {
+      double ds = magn(Boids[i].pos() - Boids[j].pos());
+      if ((ds > 0) && (ds < d)) {
+        com = Boids[j].pos();
+        count++;
+      }
+    }
+    com = com / count;
+    copycoh[i].vel() = (com - Boids[i].pos()) * c;
+  }
+  return copycoh;
+}
 #endif

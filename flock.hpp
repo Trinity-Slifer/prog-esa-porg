@@ -5,6 +5,4 @@
 #include <iostream>
 #include <vector>
 
-#include "rules.hpp"
-
 #endif
