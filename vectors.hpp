@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-class Bvec {
+class Bvec {  // vettori tridimensionali
  private:
   double x_{};
   double y_{};
@@ -15,7 +15,7 @@ class Bvec {
   double y() const { return y_; };
   double z() const { return z_; };
 };
-
+// Operazioni su due vettori 3D.
 Bvec operator+(Bvec const& v1, Bvec const& v2) {
   Bvec res = {v1.x() + v2.x(), v1.y() + v2.y(), v1.z() + v2.z()};
   return res;
@@ -23,26 +23,6 @@ Bvec operator+(Bvec const& v1, Bvec const& v2) {
 
 Bvec operator-(Bvec const& v1, Bvec const& v2) {
   Bvec res = {v1.x() - v2.x(), v1.y() - v2.y(), v1.z() - v2.z()};
-  return res;
-}
-
-Bvec operator-(Bvec const& v2) {
-  Bvec res = {-v2.x(), -v2.y(), -v2.z()};
-  return res;
-}
-
-double operator*(Bvec const& v1, Bvec const& v2) {
-  double res = v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z();
-  return res;
-}
-
-Bvec operator*(Bvec const& v1, double const& s) {
-  Bvec res = {v1.x() * s, v1.y() * s, v1.z() * s};
-  return res;
-}
-
-Bvec operator/(Bvec const& v1, double const& s) {
-  Bvec res = {v1.x() / s, v1.y() / s, v1.z() / s};
   return res;
 }
 
@@ -55,5 +35,26 @@ Bvec operator+=(Bvec v1, Bvec v2) {
   return v1;
 }
 
+double operator*(Bvec const& v1, Bvec const& v2) {
+  double res = v1.x() * v2.x() + v1.y() * v2.y() + v1.z() * v2.z();
+  return res;
+}
+// Operazioni su un vettore 3D.
+Bvec operator-(Bvec const& v2) {
+  Bvec res = {-v2.x(), -v2.y(), -v2.z()};
+  return res;
+}
+
 double magn(Bvec const& v1) { return sqrt(v1 * v1); }
+// Operazioni su scalare e vettore 3D.
+Bvec operator*(Bvec const& v1, double const& s) {
+  Bvec res = {v1.x() * s, v1.y() * s, v1.z() * s};
+  return res;
+}
+
+Bvec operator/(Bvec const& v1, double const& s) {
+  Bvec res = {v1.x() / s, v1.y() / s, v1.z() / s};
+  return res;
+}
+
 #endif
