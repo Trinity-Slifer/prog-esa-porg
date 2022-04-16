@@ -40,8 +40,6 @@ class Rules {  // Classe delle tre regole che definiscono il comportamento dei
 };
 
 Bvec null{0., 0., 0.};
-std::vector<Boid>& Boids;
-Rules rule;
 std::vector<Boid> sep(std::vector<Boid>& Boids,
                       Rules const& rule) {  // Regola di separazione.
   std::vector<Boid> copysep = Boids;
@@ -89,9 +87,8 @@ std::vector<Boid> ali(std::vector<Boid>& Boids, Rules const& rule) {
   }
   return copyali;
 }
-
-std::vector<Boid> coh(std::vector<Boid>& Boids,
-                      Rules const& rule) {  // Regola di coesione.
+// Regola di coesione.
+std::vector<Boid> coh(std::vector<Boid>& Boids, Rules const& rule) {
   std::vector<Boid> copycoh = Boids;
   for (size_t i; i < Boids.size(); i++) {  // Per ogni Boid.
     Bvec com = null;  // Definizione del vettore centro di massa.

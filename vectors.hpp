@@ -57,4 +57,8 @@ Bvec operator/(Bvec const& v1, double const& s) {
   return res;
 }
 
+void print(Bvec const& v1) {
+  std::cout << v1.x() << v1.y() << v1.z() << std::endl;
+}
+
 #endif

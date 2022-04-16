@@ -33,8 +33,21 @@ class Flock {
       copy[i].vel() += copyALI[i].vel();
       copyCOH = coh(b_flock, b_rules);
       copy[i].vel() += copyALI[i].vel();
+      copy[i].pos() = copy[i].pos() + copy[i].vel() * delta_t;
     }
     b_flock = copy;
+  }
+  std::vector<Boid> const& state() const { return b_flock; }
+
+  Boid getBoid(int i) { return b_flock[i]; }
+
+  Bvec CoMass(Flock b_flock) {
+    Bvec CoMass = null;
+    for (int i = 0; i < b_flock.size(); i++) {
+      CoMass += getBoid(i).pos();
+    }
+    CoMass = CoMass / b_flock.size();
+    return CoMass;
   }
 };
 
