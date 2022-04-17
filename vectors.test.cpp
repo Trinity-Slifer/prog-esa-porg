@@ -62,7 +62,7 @@ TEST_CASE("TESTING VECTORS") {
     CHECK(magn(v3) == 4.);
     CHECK(magn(v1) == sqrt(6.));
   }
-  /*
+
   SUBCASE("testing +=") {
     Bvec v1{1., 2., 1.};
     Bvec v2{2., 3., 1.};
@@ -74,23 +74,29 @@ TEST_CASE("TESTING VECTORS") {
     CHECK(v2 += v3 == res2);
     CHECK(v1 += v3 == res3);
   }
-  */
 }
 
 TEST_CASE("TESTING FLOCKS") {
+  Bvec P1{1., 0., 0.};
+  Bvec P2{0., 0., 0.};
+  Bvec V1{1., 1., 1.};
+  Bvec V2{1., 1., 0.};
+  Boid b1{P1, V1};
+  Boid b2{P2, V2};
+  std::vector<Boid> Boids{b1, b2};
+  Rules r1(2., 2., 1., 1., 1.);
+  Flock flock{Boids, r1};
+  flock.evolve(1.);
+  SUBCASE("Separation") {
+    std::vector<Boid> res = sep(Boids, r1);
+    Bvec ciao = res[0].vel();
+    Bvec k = {1., 0., 0.};
+    CHECK(ciao == k);
+  }
   SUBCASE("Testing with 2 Boids") {
-    Bvec P1{1., 0., 0.};
-    Bvec P2{0., 0., 0.};
-    Bvec V1{1., 1., 1.};
-    Bvec V2{1., 1., 0.};
-    Boid b1{P1, V1};
-    Boid b2{P2, V2};
-    std::vector<Boid> Boids{b2, b2};
-    Rules r1(2., 0.5, 1., 1., 1.);
-    Flock flock{r1};
-    flock.evolve(1.);
-    Bvec res = b1.vel();
-    Bvec res1 = {0.5, 1., 0.};
+    std::vector<Boid> res0 = flock.state();
+    Bvec res = (res0[0].vel());
+    Bvec res1 = {1., 1., 0};
     CHECK(res == res1);
   }
 }

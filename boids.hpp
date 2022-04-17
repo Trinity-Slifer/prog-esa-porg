@@ -14,9 +14,9 @@ class Boid {  // Classe Boid formata da due vettori, uno posizione e uno
   Bvec b_vel;
 
  public:
-  Boid(Bvec pos, Bvec vel) : b_pos{pos}, b_vel{vel} {}
-  Bvec pos() const { return b_pos; };
-  Bvec vel() const { return b_vel; };
+  Boid(Bvec &pos, Bvec &vel) : b_pos{pos}, b_vel{vel} {}
+  Bvec &pos() { return b_pos; };
+  Bvec &vel() { return b_vel; };
   // nt size() const { return }
 };
 
@@ -40,14 +40,14 @@ class Rules {  // Classe delle tre regole che definiscono il comportamento dei
 };
 
 Bvec null{0., 0., 0.};
-std::vector<Boid> sep(std::vector<Boid>& Boids,
-                      Rules const& rule) {  // Regola di separazione.
+std::vector<Boid> sep(std::vector<Boid> &Boids,
+                      Rules const &rule) {  // Regola di separazione.
   std::vector<Boid> copysep = Boids;
-  for (size_t i; i < Boids.size(); i++) {  // Per ogni Boid.
+  for (size_t i = 0; i < Boids.size(); i++) {  // Per ogni Boid.
     // Si azzera la velocitá e la posizione copia relativa all'i-esimo Boid.
     copysep[i].vel() = null;
     copysep[i].pos() = null;
-    for (size_t j; j < Boids.size(); j++) {  // Per ogni Boid.
+    for (size_t j = 0; j < Boids.size(); j++) {  // Per ogni Boid.
       double ds = magn(Boids[i].pos() - Boids[j].pos());
       // Presi solo i Boid vicini diversi dal Boid stesso
       if ((ds > 0) && (ds < rule.d())) {
@@ -55,7 +55,8 @@ std::vector<Boid> sep(std::vector<Boid>& Boids,
         // dalla regola di separazione.
         if (ds < rule.dss()) {
           // Regola di separazione.
-          copysep[i].vel() += (-((Boids[i].pos() - Boids[j].pos()) * rule.s()));
+          copysep[i].vel() = copysep[i].vel() +
+                             (((Boids[i].pos() - Boids[j].pos()) * rule.s()));
         }
       }
     }
@@ -63,23 +64,24 @@ std::vector<Boid> sep(std::vector<Boid>& Boids,
   return copysep;
 }
 // Regola di allineamento.
-std::vector<Boid> ali(std::vector<Boid>& Boids, Rules const& rule) {
+int count = 0;
+std::vector<Boid> ali(std::vector<Boid> &Boids, Rules const &rule) {
   std::vector<Boid> copyali = Boids;
-  for (size_t i; i < Boids.size(); i++) {  // Per ogni Boid.
+  for (size_t i = 0; i < Boids.size(); i++) {  // Per ogni Boid.
     // Dichiarazione di un vettore velocitá utile per definire la velocitá
     // data dall'allineamento dei Boid vicini, é una sommatoria.
     Bvec velali = null;
-    int count;  // contatore del numero di Boids vicini.
+    count = 0;  // contatore del numero di Boids vicini.
     // Si azzera la velocitá e la posizione copia relativa all'i-esimo Boid.
     copyali[i].vel() = null;
     copyali[i].pos() = null;
-    for (size_t j; j < Boids.size(); j++) {  // Per ogni Boid.
+    for (size_t j = 0; j < Boids.size(); j++) {  // Per ogni Boid.
       // Si calcola la distanza tra due Boid.
       double ds = magn(Boids[i].pos() - Boids[j].pos());
       // Presi solo i Boid vicini diversi dal Boid stesso
       if ((ds < rule.d()) && (ds > 0)) {
         // Si calcola la velocitá tra due boid e si aggiunge alla sommatoria.
-        velali += (Boids[j].vel() - Boids[i].vel());
+        velali = velali + (Boids[j].vel() - Boids[i].vel());
         count++;  // Si aggiunge un punto al contatore di Boid vicini.
       }
     }
@@ -88,19 +90,19 @@ std::vector<Boid> ali(std::vector<Boid>& Boids, Rules const& rule) {
   return copyali;
 }
 // Regola di coesione.
-std::vector<Boid> coh(std::vector<Boid>& Boids, Rules const& rule) {
+std::vector<Boid> coh(std::vector<Boid> &Boids, Rules const &rule) {
   std::vector<Boid> copycoh = Boids;
-  for (size_t i; i < Boids.size(); i++) {  // Per ogni Boid.
+  for (size_t i = 0; i < Boids.size(); i++) {  // Per ogni Boid.
     Bvec com = null;  // Definizione del vettore centro di massa.
     // Si azzera la velocitá e la posizione copia relativa all'i-esimo Boid.
     copycoh[i].vel() = null;
     copycoh[i].pos() = null;
-    int count;                               // Contatore di Boid vicini
-    for (size_t j; j < Boids.size(); j++) {  // Per ogni Boid.
+    count = 0;                                   // Contatore di Boid vicini
+    for (size_t j = 0; j < Boids.size(); j++) {  // Per ogni Boid.
       double ds = magn(Boids[i].pos() - Boids[j].pos());
       // Presi solo i Boid vicini diversi dal Boid stesso.
       if ((ds > 0) && (ds < rule.d())) {
-        com = Boids[j].pos();  // Si calcola il centro di massa.
+        com = com + Boids[j].pos();  // Si calcola il centro di massa.
         count++;  // Si aggiunge un punot al contatore di Boid vicini.
       }
     }

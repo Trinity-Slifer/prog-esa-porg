@@ -13,7 +13,8 @@ class Flock {
   Rules b_rules;
 
  public:
-  Flock(Rules const& rules) : b_rules{rules} {}
+  Flock(std::vector<Boid>& flock, Rules const& rules)
+      : b_flock{flock}, b_rules{rules} {}
   void pushback(Boid const& pps) {
     b_flock.push_back(pps);
   }  // Definizione del pushback.
@@ -28,18 +29,19 @@ class Flock {
     // dell'i-esimo boid.
     for (size_t i = 0; i < b_flock.size(); i++) {
       copySEP = sep(b_flock, b_rules);
-      copy[i].vel() += copySEP[i].vel();
+      //  copy[i].vel() += copySEP[i].vel();
       copyALI = ali(b_flock, b_rules);
-      copy[i].vel() += copyALI[i].vel();
+      //  copy[i].vel() += copyALI[i].vel();
       copyCOH = coh(b_flock, b_rules);
-      copy[i].vel() += copyALI[i].vel();
+      copy[i].vel() = copy[i].vel() + copyALI[i].vel() + copyCOH[i].vel() +
+                      copySEP[i].vel();
       copy[i].pos() = copy[i].pos() + copy[i].vel() * delta_t;
     }
     b_flock = copy;
   }
   std::vector<Boid> const& state() const { return b_flock; }
 
-  Boid getBoid(int i) { return b_flock[i]; }
+  Boid getBoid(size_t i) { return b_flock[i]; }
 
   Bvec CoMass(Flock b_flock) {
     Bvec CoMass = null;
